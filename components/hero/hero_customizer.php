@@ -56,73 +56,52 @@ function wi_hero_customizer_controles($wp_customize){
 
 
   // Hero CTA ButtonText
-  $wp_customize->add_setting('wi_hero_text', array(
+  $wp_customize->add_setting('wi_hero_btn', array(
     'default' => "Shop Now",
     'sanitize_callback' => 'wp_filter_nohtml_kses'
   ));
 
   $wp_customize->add_control(new WP_Customize_Control(
     $wp_customize,
-    'wi_hero_text',
+    'wi_hero_btn',
     array(
-      'label' => esc_html__("Small Text", "wroughtink"),
+      'label' => esc_html__("Button Text", "wroughtink"),
       'section' => "wi_hero_section",
-      'settings' => "wi_hero_text",
+      'settings' => "wi_hero_btn",
       'type' => "text"
     )
   ));
+
+  // Hero CTA Button page selector.
+  $wp_customize->add_setting('wi_hero_btn_link', array(
+    'default' => "Call to Action Page Link",
+    'sanitize_callback' => 'wp_filter_nohtml_kses'
+  ));
+
+  $wp_customize->add_control(new WP_Customize_Control(
+    $wp_customize,
+    'wi_hero_btn_link',
+    array(
+      'label' => esc_html__("Call to Action Button Page Link", "wroughtink"),
+      'section' => "wi_hero_section",
+      'settings' => "wi_hero_btn_link",
+      'type' => "dropdown-pages"
+    )
+  ));
+
+  // Hero Background image selector
+  $wp_customize->add_setting('wi_hero_background_image', array(
+    'sanitize_callback' => 'wp_filter_nohtml_kses'
+  ));
+
+  $wp_customize->add_control(new WP_Customize_Image_Control(
+    $wp_customize,
+    'wi_hero_background_image',
+    array(
+      'label' => esc_html__("Hero Background Image Selector", "wroughtink"),
+      'section' => "wi_hero_section",
+      'settings' => "wi_hero_background_image"
+    )
+  ));
+
 }
-
-
-
-
-
-
-function wi_list_pages( $args = '' ) {
-    $defaults = array(
-        'depth'        => 0,
-        'show_date'    => '',
-        'date_format'  => get_option( 'date_format' ),
-        'child_of'     => 0,
-        'exclude'      => '',
-        'title_li'     => __( 'Pages' ),
-        'echo'         => 1,
-        'authors'      => '',
-        'sort_column'  => 'menu_order, post_title',
-        'link_before'  => '',
-        'link_after'   => '',
-        'item_spacing' => 'preserve',
-        'walker'       => '',
-    );
-
-    $r = wp_parse_args( $args, $defaults );
-
-    if ( ! in_array( $r['item_spacing'], array( 'preserve', 'discard' ), true ) ) {
-        // invalid value, fall back to default.
-        $r['item_spacing'] = $defaults['item_spacing'];
-    }
-
-    $output       = '';
-    $current_page = 0;
-
-    // sanitize, mostly to keep spaces out
-    $r['exclude'] = preg_replace( '/[^0-9,]/', '', $r['exclude'] );
-
-    // Allow plugins to filter an array of excluded pages (but don't put a nullstring into the array)
-    $exclude_array = ( $r['exclude'] ) ? explode( ',', $r['exclude'] ) : array();
-
-    /**
-     * Filters the array of pages to exclude from the pages list.
-     *
-     * @since 2.1.0
-     *
-     * @param array $exclude_array An array of page IDs to exclude.
-     */
-    $r['exclude'] = implode( ',', apply_filters( 'wp_list_pages_excludes', $exclude_array ) );
-
-    // Query pages.
-    $r['hierarchical'] = 0;
-    $pages             = get_pages( $r );
-
-    return $pages;
-  }

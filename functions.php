@@ -289,3 +289,4 @@ function genesis_sample_comments_gravatar( $args ) {
 */
 
 require_once "components/hero/hero_customizer.php";
+require_once "components/homepage_content/wi_content_controles.php";

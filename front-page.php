@@ -6,11 +6,11 @@
 
 
 function wi_render_hero_markup(){
-	echo "<section class='hero-area'>";
+	echo "<section class='hero-area'style='background-image: url(". get_theme_mod("wi_hero_background_image") .")'>";
 	echo	"<article>";
 	echo		"<h1>". get_theme_mod("wi_hero_title") ."</h1>";
 	echo		"<p>". get_theme_mod("wi_hero_text") ."</p>";
-	echo 		"<button class='hero-btn'>Get Started</button>";
+	echo 		"<a href='". get_post(get_theme_mod("wi_hero_btn_link"))->guid ."' class='hero-btn'>". get_theme_mod("wi_hero_btn") ."</a>";
 	echo	"</article>";
 	echo "</section>";
 }
@@ -63,8 +63,34 @@ function wi_folklore_markup(){
 add_action('wi_content_area', 'wi_folklore_markup');
 
 
+/**
+* Tanks and Ts section
+**/
+function wi_shop_link_markup(){
+	require_once "components/shop_components/shop_catagory_markup.php";
+	 $args = array(
+		 'taxonomy' => 'product_cat',
+		 'hide_empty' => true,
+		 'meta_key' => 'thumbnail_id'
+	 );
+	$categories = get_terms($args );
 
+	//echo print_r($categories);
+	$display = "<section class='homepage-shop-link'>";
+	$display .= "<h1>Find your darkness</h1>";
+	echo $display;
+//	echo print_r(woocommerce_get_product_subcategories());
 
+	foreach($categories as $category){
+		//get_object_vars($category) ;
+		shop_catagory($category);
+	}
+ 	echo  "</section>";
+
+  //echo print_r(get_theme_mod("wi_hero_background_image"));
+
+}
+add_action('wi_content_area', 'wi_shop_link_markup');
 
 
 
